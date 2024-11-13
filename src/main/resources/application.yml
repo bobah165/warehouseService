@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: warehouse-app
+  datasource:
+    url: jdbc:postgresql://my-db-postgresql:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 123456
+  liquibase:
+    enabled: true
+    change-log: classpath:changelog/db.changelog-master.yaml
+  kafka:
+    bootstrap-servers: kafka.default.svc.cluster.local:9092
+    consumer:
+      group-id: "order-1"
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: 1
+        spring:
+          json:
+            add:
+              type:
+                headers: false
+
+server:
+  port: 8001
+  shutdown: graceful
+
+topic:
+  consumer:
+    pay: send-pay-to-warehouse-event
+    delivery: send-delivery-to-warehouse-event
+  producer:
+    pay: send-warehouse-to-pay-event
+    delivery: send-warehouse-to-delivery-event
+  saga:
+    delivery: send-delivery-saga-event
+    warehouse: send-warehouse-saga-event

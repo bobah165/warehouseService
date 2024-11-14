@@ -1,0 +1,29 @@
+replicas:
+  _default: 1
+  dev: 1
+
+selector : dev
+
+name:
+  app: warehouse-helm
+
+service:
+  nameApp: warehouse-helm-service
+  portName: port-warehouse
+  type: NodePort
+  port: 80
+  targetPort: 8001
+
+image:
+  repository: bobah165/warehouse
+  tag: v6
+
+ingress:
+  enabled: false
+  name: "warehouse-service-helm-ingress"
+  className: nginx
+  host: "arch.homework"
+  pathType: Prefix
+  path:
+    warehouse: /api/warehouse
+

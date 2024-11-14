@@ -5,12 +5,12 @@ spring:
     url: jdbc:postgresql://my-db-postgresql:5432/postgres
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 123456
+    password: postgres
   liquibase:
     enabled: true
     change-log: classpath:changelog/db.changelog-master.yaml
   kafka:
-    bootstrap-servers: kafka.default.svc.cluster.local:9092
+    bootstrap-servers: kafka-broker-0.kafka-broker-headless.default.svc.cluster.local:9092
     consumer:
       group-id: "order-1"
       auto-offset-reset: earliest

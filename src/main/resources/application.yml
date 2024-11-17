@@ -10,7 +10,7 @@ spring:
     enabled: true
     change-log: classpath:changelog/db.changelog-master.yaml
   kafka:
-    bootstrap-servers: kafka-broker-0.kafka-broker-headless.default.svc.cluster.local:9092
+    bootstrap-servers: kafka.default.svc.cluster.local:9092
     consumer:
       group-id: "order-1"
       auto-offset-reset: earliest

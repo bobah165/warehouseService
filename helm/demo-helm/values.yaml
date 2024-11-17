@@ -16,7 +16,7 @@ service:
 
 image:
   repository: bobah165/warehouse
-  tag: v6
+  tag: v7
 
 ingress:
   enabled: false

@@ -2,17 +2,17 @@ spring:
   application:
     name: warehouse-app
   datasource:
-    url: jdbc:postgresql://my-db-postgresql:5432/postgres
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   liquibase:
     enabled: true
     change-log: classpath:changelog/db.changelog-master.yaml
   kafka:
-    bootstrap-servers: kafka.default.svc.cluster.local:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
     consumer:
-      group-id: "order-1"
+      group-id: "order-2"
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -21,6 +21,9 @@ spring:
           json:
             trusted:
               packages: '*'
+        request:
+          timeout:
+            ms: ${KAFKA_CONSUMER_TIMEOUT}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -31,6 +34,13 @@ spring:
             add:
               type:
                 headers: false
+    properties:
+      heartbeat:
+        interval:
+          ms: ${KAFKA_HEARTBEAT}
+      session:
+        timeout:
+          ms: ${KAFKA_SESSION}
 
 server:
   port: 8001
